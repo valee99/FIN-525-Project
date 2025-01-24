@@ -5,6 +5,8 @@ import gzip
 from pathlib import Path
 import numpy as np
 import os
+
+
 def get_all_tickers_from_bbo(base_path = 'data/sp100_2004-8/bbo'):
     """
     Retrieves all folder names (tickers) in the 'bbo' directory and stores them in a set.
@@ -19,10 +21,9 @@ def get_all_tickers_from_bbo(base_path = 'data/sp100_2004-8/bbo'):
     
     # Check if the base path exists and is a directory
     if os.path.exists(base_path) and os.path.isdir(base_path):
-        # Iterate through entries in the directory
         for folder_name in os.listdir(base_path):
             full_path = os.path.join(base_path, folder_name)
-            # Ensure only directories are added
+            #  make sure only directories are added
             if os.path.isdir(full_path):
                 tickers.add(folder_name)
     
@@ -36,25 +37,41 @@ def read_data_bbo(folder_type,
                            hhmmss_close="16:00:00",
                            merge_same_index=True,
                            base_path='data/sp100_2004-8'):
-    # Validate input
+    """
+    Read data from BBO files for a list of stocks.
+
+    Args:
+        folder_type (): Indicates if we are reading from BBO or Trade folders.
+        stock_list (list): List of stock symbols to read data for.
+        tz_exchange (str, optional): _description_. Defaults to "America/New_York".
+        only_regular_trading_hours (bool, optional): Trading hour. Defaults to True.
+        hhmmss_open (str, optional): Open Time of Trading. Defaults to "09:30:00".
+        hhmmss_close (str, optional): Closing Time of Trading. Defaults to "16:00:00".
+        merge_same_index (bool, optional): Defaults to True.
+        base_path (str, optional): Path where data is stored. Defaults to 'data/sp100_2004-8'.
+
+    Raises:
+        ValueError: Errors in the input.
+
+    Returns:
+        _type_: Polars DataFrame containing the BBO data.
+    """
     if not isinstance(stock_list, (list, set)):
         raise ValueError(f"Expected stock_list to be a list or set, but got {type(stock_list)}.")
 
-    # Dictionary to store dataframes
+    # to store dataframes
     stock_dfs = {}
     
-    # Construct path to specific folder type
+    # path to specific folder type
     folder_path = Path(base_path) / folder_type
     
     stock_set = set(stock_list)
 
     
-    # Iterate through stock folders
     for stock_folder in folder_path.iterdir():
         if stock_folder.is_dir():
             stock_symbol = stock_folder.name
             
-            # Skip if stock is not in the specified list
             if stock_symbol not in stock_set:
                 continue
             
@@ -69,9 +86,8 @@ def read_data_bbo(folder_type,
             # List to store individual dataframes for concatenation
             dfs_to_concat = []
             
-            # Open and process tar file
             with tarfile.open(tar_file, 'r') as tar:
-                # Get all .csv.gz files starting from July 2008
+                # all .csv.gz files starting from July 2008
                 months = ['2008-07', '2008-08', '2008-09', '2008-10', '2008-11', '2008-12']
                 csv_gz_files = [
                     f for f in tar.getmembers()
@@ -79,20 +95,18 @@ def read_data_bbo(folder_type,
                 ]
                 
                 for csv_gz_file in csv_gz_files:
-                    # Extract and read the compressed CSV
                     f = tar.extractfile(csv_gz_file)
                     if f is not None:
                         # Decompress the content
                         with gzip.open(f, 'rb') as gz_file:
                             try:
-                                # Read into polars dataframe with explicit schema
                                 df = pl.read_csv(
                                     gz_file,
                                     null_values=["()"],
                                     #schema=schema,
                                     low_memory=True
                                 )
-                                # Add a column for the stock symbol
+                                # column for the stock symbol
                                 df = df.with_columns(pl.lit(stock_symbol).alias("Stock"))
                                 dfs_to_concat.append(df)
                             except Exception as e:
@@ -148,20 +162,39 @@ def read_data_trade(folder_type,
                            only_regular_trading_hours=True,
                            merge_sub_trades=True,
                            base_path='data/sp100_2004-8'):
+    """
+    Read data from Trade files for a list of stocks.
+
+    Args:
+        folder_type (str): Indicates if we are reading from BBO or Trade folders.
+        stock_list (list): List of stock symbols to read data for.
+        tz_exchange (str, optional): Exchange Rate taken into consideration. Defaults to "America/New_York".
+        only_non_special_trades (bool, optional): Defaults to True.
+        only_regular_trading_hours (bool, optional): Consider only regular trading hours. Defaults to True.
+        merge_sub_trades (bool, optional): Merge Trades for Different stocks. Defaults to True.
+        base_path (str, optional): Path where data is stored. Defaults to 'data/sp100_2004-8'.
+
+    Raises:
+        ValueError: Errors in the input.
+
+    Returns:
+        _type_: Polars DataFrame containing the Trade data.
+    """
+    
+    
     # Validate input
     if not isinstance(stock_list, (list, set)):
         raise ValueError(f"Expected stock_list to be a list or set, but got {type(stock_list)}.")
 
-    # Dictionary to store dataframes
+    # to store dataframes
     stock_dfs = {}
     
-    # Construct path to specific folder type
+    # path to specific folder type
     folder_path = Path(base_path) / folder_type
     
     stock_set = set(stock_list)
 
     
-    # Iterate through stock folders
     for stock_folder in folder_path.iterdir():
         if stock_folder.is_dir():
             stock_symbol = stock_folder.name
@@ -183,7 +216,7 @@ def read_data_trade(folder_type,
             
             # Open and process tar file
             with tarfile.open(tar_file, 'r') as tar:
-                # Get all .csv.gz files starting from April 2008
+                # .csv.gz files starting from Jluy 2008
                 months = ['2008-07', '2008-08', '2008-09', '2008-10', '2008-11', '2008-12']
                 csv_gz_files = [
                     f for f in tar.getmembers()
@@ -191,13 +224,11 @@ def read_data_trade(folder_type,
                 ]
                 
                 for csv_gz_file in csv_gz_files:
-                    # Extract and read the compressed CSV
                     f = tar.extractfile(csv_gz_file)
                     if f is not None:
                         # Decompress the content
                         with gzip.open(f, 'rb') as gz_file:
                             try:
-                                # Read into polars dataframe with explicit schema
                                 df = pl.read_csv(
                                     gz_file,
                                     null_values=["()"],

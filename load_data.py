@@ -140,7 +140,7 @@ def read_data_bbo(folder_type,
     DF = DF.filter(pl.col("ask-price")>0).filter(pl.col("bid-price")>0).filter(pl.col("ask-price")>pl.col("bid-price"))
 
     if merge_same_index:
-        DF = DF.group_by('index',maintain_order=True).last()   # last quote of the same timestamp
+        DF = DF.group_by('index', maintain_order=True).last()   # last quote of the same timestamp
     
     if only_regular_trading_hours:
         hh_open,mm_open,ss_open = [float(x) for x in hhmmss_open.split(":")]
@@ -276,13 +276,14 @@ def read_data_trade(folder_type,
 
 
 def main():
-    tickers = get_all_tickers_from_bbo('data/sp100_2004-8/bbo')
+    currentPath = os.getcwd()
+    tickers = get_all_tickers_from_bbo(f"{currentPath}/data/sp100_2004-8/bbo")
     subset_tickers = tickers[:6]
     len(subset_tickers)
-    data_bbo = read_data_bbo('bbo', subset_tickers)
-    data_trade = read_data_trade('trade', subset_tickers)
-    data_bbo.write_parquet('data/raw_bbo_data.parquet')
-    data_trade.write_parquet('data/raw_trade_data.parquet')
+    data_bbo = read_data_bbo('bbo', tickers)
+    data_trade = read_data_trade('trade', tickers)
+    data_bbo.write_parquet(f"{currentPath}/data/raw_bbo_data_1.parquet")
+    data_trade.write_parquet(f"{currentPath}/data/raw_trade_data_1.parquet")
     
 if __name__ == "__main__":
     main()

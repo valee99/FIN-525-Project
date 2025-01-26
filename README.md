@@ -6,12 +6,7 @@
 .
 ├─ .DS_Store
 ├─ README.md
-├─ __pycache__
-│  ├─ load_data.cpython-312.pyc
-│  └─ utils.cpython-312.pyc
 ├─ bahc_method.ipynb
-├─ correlation_clipping.ipynb
-├─ covariance_base.ipynb
 ├─ data
 │  ├─ .DS_Store
 │  ├─ bahc
@@ -40,15 +35,11 @@
 ├─ get_smaller_dataset.ipynb
 ├─ load_data.py
 ├─ main.ipynb
-├─ plots
-│  ├─ .DS_Store
-│  ├─ heatmap.png
-│  ├─ risk_comparison_bahc.png
-│  └─ risk_comparison_covariance.png
 ├─ requirements.txt
-├─ risk_comparisons.ipynb
 └─ utils.py
 ```
+
+
 
 
 ## [Project Setup](#setup)

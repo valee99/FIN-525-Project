@@ -173,3 +173,36 @@ def compute_weights_GVM(covariance_matrix):
     covariance_matrix_inv = LA.inv(covariance_matrix)
     weights = covariance_matrix_inv.sum(axis=1) / covariance_matrix_inv.sum()
     return weights
+
+
+def eigenvalue_clipping(lambdas, v, lambda_plus):
+    N=len(lambdas)
+    
+    
+    # _s stands for _structure below
+    sum_lambdas_gt_lambda_plus = np.sum(lambdas[lambdas>lambda_plus])
+    
+    sel_bulk = lambdas<=lambda_plus                     
+    N_bulk=np.sum(sel_bulk)
+    sum_lambda_bulk=np.sum(lambdas[sel_bulk])        
+    delta=sum_lambda_bulk/N_bulk                      
+    
+    lambdas_clean=lambdas
+    lambdas_clean[lambdas_clean<=lambda_plus]=delta
+    
+    
+    C_clean=np.zeros((N, N))
+    v_m=np.matrix(v)
+    
+    for i in range(N-1):
+        C_clean=C_clean+lambdas_clean[i] * np.dot(v_m[i,].T,v_m[i,]) 
+        
+    np.fill_diagonal(C_clean,1)
+            
+    return C_clean    
+    
+def P0(lambdas,q, sigma):
+    lambda_plus = sigma**2*(1+np.sqrt(q))**2
+    lambda_minus = sigma**2*(1-np.sqrt(q))**2
+    vals = 1/(q*2*np.pi*sigma**2*lambdas)*np.sqrt((lambda_plus-lambdas)*(lambdas-lambda_minus))
+    return vals

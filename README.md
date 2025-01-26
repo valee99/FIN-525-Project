@@ -3,40 +3,18 @@
 ## Folder Structure
 
 ```
-.
+📦 
 ├─ .DS_Store
 ├─ README.md
-├─ bahc_method.ipynb
 ├─ data
-│  ├─ .DS_Store
-│  ├─ bahc
-│  │  ├─ .DS_Store
-│  │  ├─ moving_avg_in_sample.csv
-│  │  ├─ moving_avg_out_sample.csv
-│  │  ├─ risk_out_sample.csv
-│  │  ├─ risks_in_sample.csv
-│  │  └─ weights.csv
-│  ├─ clean_full_bbo_data.parquet
-│  ├─ correlation_data
-│  │  ├─ .DS_Store
-│  │  ├─ moving_avg_in_sample.csv
-│  │  ├─ moving_avg_out_sample.csv
-│  │  ├─ risk_out_sample.csv
-│  │  ├─ risks_in_sample.csv
-│  │  └─ weights.csv
-│  └─ covariance_data
-│     ├─ .DS_Store
-│     ├─ moving_avg_in_sample.csv
-│     ├─ moving_avg_out_sample.csv
-│     ├─ risks_in_sample.csv
-│     ├─ risks_out_sample.csv
-│     └─ weights_df.csv
+│  └─ clean_full_bbo_data.parquet
 ├─ data_analysis.ipynb
 ├─ get_smaller_dataset.ipynb
 ├─ load_data.py
 ├─ main.ipynb
 ├─ requirements.txt
 └─ utils.py
+
 ```
 
 

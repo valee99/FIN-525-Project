@@ -57,7 +57,9 @@ Install required packages with :
 
 Set up a data folder as following : 
 - `mkdir -p data`
-Subsequently, download datafrom the [drive](https://drive.switch.ch/index.php/s/0X3Je6DauQRzD2r) provided by the Professor. The data used is called `sp100_2004-8`, which contains data from 2004 to 2008. After downloading the data, store the folder `sp100_2004-8` inside data` as can be observed above in [Project Setup](#setup).
+- 
+Subsequently, download datafrom the [drive](https://drive.switch.ch/index.php/s/0X3Je6DauQRzD2r) provided by the Professor. The data used is called `sp100_2004-8`, which contains data from 2004 to 2008. After downloading the data, store the folder `sp100_2004-8` inside `data` as can be observed above in [Project Setup](#setup).
+Then, download from [this drive](https://drive.google.com/file/d/1SrcHEkzGBf8P73Pl8ty7U_4VPUHuJvfm/view?usp=sharing) the file `raw_full_bbo_data.parquet` and store it into the folder `data` you have created.
 
 ## Team Components
 For any question and/or curiosity, feel free to reach

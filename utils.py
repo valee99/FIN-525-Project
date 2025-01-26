@@ -206,3 +206,108 @@ def P0(lambdas,q, sigma):
     lambda_minus = sigma**2*(1-np.sqrt(q))**2
     vals = 1/(q*2*np.pi*sigma**2*lambdas)*np.sqrt((lambda_plus-lambdas)*(lambdas-lambda_minus))
     return vals
+
+
+
+
+
+def plot_two_risks_in(risks_df_in_sample, risks_df_in_sample_filtered):
+    """
+    Plot In-Sample vs Out-of-Sample Risk with improved visualization.
+
+    Parameters:
+        risks_df_in_sample (pd.DataFrame): DataFrame containing in-sample risk data with a "Risk" column.
+        risks_df_out_sample (pd.DataFrame): DataFrame containing out-of-sample risk data with a "Risk" column.
+    """
+    sns.set_theme(style="whitegrid", palette="muted", font="serif")
+
+    # Create a range for the x-axis
+    x_range = range(len(risks_df_in_sample_filtered))
+
+    # Plot the risks
+    plt.figure(figsize=(12, 6))
+
+    sns.lineplot(
+        x=x_range,
+        y=risks_df_in_sample["Risk"],
+        label="In-Sample Risk No Filter",
+        linewidth=1.5,
+        color="blue"
+    )
+    sns.lineplot(
+        x=x_range,
+        y=risks_df_in_sample_filtered["Risk"],
+        label="In-Sample Risk BAHC",
+        linewidth=1.5,
+        color="red"
+    )
+
+    # Customize the plot
+    plt.title("In-Sample Variance Over Time", fontsize=16, weight="bold")
+    plt.xlabel("Time", fontsize=14, labelpad=10)
+    plt.ylabel("Risk", fontsize=14, labelpad=10)
+    plt.xticks(fontsize=10)
+    plt.yticks(fontsize=10)
+    plt.legend(fontsize=12, title="Risk Type", title_fontsize=12, loc="upper right")
+    plt.grid(True, linestyle='--', alpha=0.6)
+    plt.ylim([0, 5e-6])  # Specify y-axis limits
+    plt.tight_layout()
+
+    # Add a horizontal line for emphasis (optional)
+    plt.axhline(y=5e-7, color="gray", linestyle="--", linewidth=1, alpha=0.8)
+
+    # Show the plot
+    plt.show()
+
+
+
+
+
+
+def plot_two_risks_out(risks_df_in_sample, risks_df_out_sample_filtered):
+    """
+    Plot In-Sample vs Out-of-Sample Risk with improved visualization.
+
+    Parameters:
+        risks_df_in_sample (pd.DataFrame): DataFrame containing in-sample risk data with a "Risk" column.
+        risks_df_out_sample (pd.DataFrame): DataFrame containing out-of-sample risk data with a "Risk" column.
+    """
+    sns.set_theme(style="whitegrid", palette="muted", font="serif")
+
+    # Create a range for the x-axis
+    x_range = range(len(risks_df_out_sample_filtered))
+
+    # Plot the risks
+    plt.figure(figsize=(12, 6))
+
+    sns.lineplot(
+        x=x_range,
+        y=risks_df_in_sample["Risk"],
+        label="Out-of-Sample Risk No Filter",
+        linewidth=1.5,
+        color="blue"
+    )
+    sns.lineplot(
+        x=x_range,
+        y=risks_df_out_sample_filtered["Risk"],
+        label="Out-of-Sample Risk BAHC",
+        linewidth=1.5,
+        color="red"
+    )
+
+    # Customize the plot
+    plt.title("Out-of-Sample Variance Over Time", fontsize=16, weight="bold")
+    plt.xlabel("Time", fontsize=14, labelpad=10)
+    plt.ylabel("Risk", fontsize=14, labelpad=10)
+    plt.xticks(fontsize=10)
+    plt.yticks(fontsize=10)
+    plt.legend(fontsize=12, title="Risk Type", title_fontsize=12, loc="upper right")
+    plt.grid(True, linestyle='--', alpha=0.6)
+    plt.ylim([0, 5e-6])  # Specify y-axis limits
+    plt.tight_layout()
+
+    # Add a horizontal line for emphasis (optional)
+    plt.axhline(y=5e-7, color="gray", linestyle="--", linewidth=1, alpha=0.8)
+
+    # Show the plot
+    plt.show()

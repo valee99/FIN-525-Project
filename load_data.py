@@ -278,12 +278,12 @@ def read_data_trade(folder_type,
 def main():
     currentPath = os.getcwd()
     tickers = get_all_tickers_from_bbo(f"{currentPath}/data/sp100_2004-8/bbo")
-    subset_tickers = tickers[10:21]
+    subset_tickers = tickers[10:14]
     len(subset_tickers)
-    data_bbo = read_data_bbo('bbo', tickers)
-    data_trade = read_data_trade('trade', tickers)
-    data_bbo.write_parquet(f"{currentPath}/data/raw_bbo_data_1.parquet")
-    data_trade.write_parquet(f"{currentPath}/data/raw_trade_data_1.parquet")
+    data_bbo = read_data_bbo('bbo', subset_tickers)
+    # data_trade = read_data_trade('trade', tickers)
+    data_bbo.write_parquet(f"{currentPath}/data/raw_small_bbo_data.parquet")
+    # data_trade.write_parquet(f"{currentPath}/data/raw_trade_data_1.parquet")
     
 if __name__ == "__main__":
     main()

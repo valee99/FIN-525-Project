@@ -278,7 +278,7 @@ def read_data_trade(folder_type,
 def main():
     currentPath = os.getcwd()
     tickers = get_all_tickers_from_bbo(f"{currentPath}/data/sp100_2004-8/bbo")
-    subset_tickers = tickers[10:14]
+    subset_tickers = tickers[10:22]
     len(subset_tickers)
     data_bbo = read_data_bbo('bbo', subset_tickers)
     # data_trade = read_data_trade('trade', tickers)
